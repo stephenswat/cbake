@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "cbake"
+version = "0.1.0"
+description = "A wrapper script for CMake"
+authors = ["Stephen Nicholas Swatman <stephen@v25.nl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typer = "^0.7.0"
+xdg-base-dirs = "^6.0.0"
+rich = "^13.3.3"
+
+[tool.poetry.scripts]
+cbake = 'cbake.cli:cli'
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
