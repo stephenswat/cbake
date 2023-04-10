@@ -3,6 +3,7 @@ import pathlib
 import rich
 from xdg_base_dirs import xdg_cache_home, xdg_config_home
 
+import cbake
 import cbake.workdir
 import cbake.config
 import cbake.exceptions
@@ -57,7 +58,7 @@ def status():
     instances = cbake.workdir.get_instances(workdir)
 
     if len(instances) > 0:
-        rich.print(f"This project has {len(instances)} instances:")
+        rich.print(f"This project has {len(instances)} instance(s):")
         for i in instances:
             rich.print(f" - [yellow]{i.name}[/]")
     else:
@@ -69,6 +70,7 @@ def add(
     name: str = typer.Argument(DEFAULT_INSTANCE),
     freeze: bool = False,
     force: bool = False,
+    isolate: bool = False,
     settings: list[str] = typer.Option([], "-D"),
 ):
     """
@@ -134,7 +136,7 @@ def remove(name: str, yes: bool = False):
         if not conf:
             raise typer.Abort()
 
-    rich.print(f"[bold blue]Information:[/] Deleting {len(targets)} instances.")
+    rich.print(f"[bold blue]Information:[/] Deleting {len(targets)} instance(s).")
 
     for t in targets:
         cbake.workdir.remove_instance(workdir, t)
@@ -180,6 +182,27 @@ def inspect(name: str = typer.Argument(DEFAULT_INSTANCE)):
         print(f"Goodbye Ms. {name}. Have a good day.")
     else:
         print(f"Bye {name}!")
+
+
+@cli.command()
+def about(version: bool = False):
+    if version:
+        print(cbake.__version__)
+    else:
+        rich.print(f"[bold]CBake[/] version [bold green]v{cbake.__version__}[/]")
+
+@cli.command(hidden=True)
+def cake():
+    """
+    Prints a nice cake. What else is there to say?
+    """
+    rich.print("   [bold yellow], , , , , ,[/]")
+    rich.print("   [bold]| | | | | |[/]")
+    rich.print("  [bold orange_red1]@$@$@$@$@$@$@[/]")
+    rich.print("  [bold orange_red1]|[/]           [bold orange_red1]|[/]")
+    rich.print("[bold orange_red1]@$@$@$@$@$@$@$@$@[/]")
+    rich.print("[bold orange_red1]|[/]     CBake     [bold orange_red1]|[/]")
+    rich.print("[bold orange_red1]@$@$@$@$@$@$@$@$@[/]")
 
 
 @cli.callback()
